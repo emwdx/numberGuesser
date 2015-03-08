@@ -1,0 +1,33 @@
+#main{
+    
+    
+ height: 600px;   
+ border: solid gray 1px;
+ border-radius: 5px;
+ margin: 10px;    
+    
+    
+}
+
+.inputNumber{
+    
+    
+ width:100px;   
+    
+    
+}
+
+#guessComputerRuleInput{
+    
+ font-size: 18px;
+ width:90%;
+    
+    
+}
+
+#submitGuessComputerRule{
+    
+margin:10px;    
+    
+    
+}
