@@ -115,19 +115,20 @@
 
 {{>guessComputerRule}}
 {{#if submittedGuess}}
-{{#if guessedCorrectly}}
+    {{#if guessedCorrectly}}
 
-{{>guessIsCorrect}}
+    {{>guessIsCorrect}}
+
+    {{/if}}
+
+    {{#unless guessedCorrectly}}
+
+    {{>guessIsNotCorrect}}
+
+    {{/unless}}
 
 {{/if}}
 
-{{#unless guessedCorrectly}}
-
-{{>guessIsNotCorrect}}
-
-{{/unless}}
-
-{{/if}}
 </script>
     
 <script type="text/spacebars" name="slide4">
@@ -148,7 +149,7 @@ If you put in <input type = "number" class = "inputNumber" value = "{{currentVal
     
 <script type = "text/spacebars" name = "guessComputerRule">
  <div class = "row">
- <div class = "col-md-12 text-center">
+ <div class = "col-md-10 col-md-offset-1 text-center">
   <h3>I think your rule is:</h3>  
   <input type = "text" id = "guessComputerRuleInput" class = "input" placeholder = "Ex. 3*number + 5 or number^2 + 2" value = "number^2 - 1">
   <button class = "btn btn-primary" id = "submitGuessComputerRule">Submit my guess!</button>
@@ -157,11 +158,19 @@ If you put in <input type = "number" class = "inputNumber" value = "{{currentVal
     
 </script>    
 <script type = "text/spacebars" name = "guessIsCorrect">
-<h3>Nice work! Now let's change the game a little bit. Select 'Next'.</h3>    
+<div class = "row">
+ <div class = "col-md-10 col-md-offset-1 text-center">
+<h3>Nice work! <p></p>Now let's change the game a little bit. Select 'Next'.</h3>    
+</div>
+</div>
 </script>    
     
 <script type = "text/spacebars" name = "guessIsNotCorrect">
- <h3>That's not my rule. Try entering another one.</h3>    
+<div class = "row">
+ <div class = "col-md-10 col-md-offset-1 text-center">
+ <h3>That's not my rule. Try entering another one.</h3> 
+ </div>
+ </div>
 </script>  
     
 <!--Put all templates above this line-->

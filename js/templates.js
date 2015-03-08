@@ -11,7 +11,7 @@ var computerRuleSubmitted = ReactiveVar(false);
 var calculator;
 var inputGuesses = [inputValue1,inputValue2,inputValue3]
 
-var x1 = [-6,-5,-4,-3,-2,-1,0,1,2,3,4,5];
+x1 = [-8,-6,0,1,4,12];
 
 var coefficients;
 
@@ -99,62 +99,46 @@ Template.guessComputerRule.events({
     
    
     'click #submitGuessComputerRule':function(){
+        
+     computerRuleSubmitted.set(true);    
+     var y1 = generateLinearValues(x1,[0,0,coefficients[0],coefficients[1]]);    
+     var y1L=[];   
+        
      var inputRule = $("#guessComputerRuleInput").val().replace(/number/gi,'m');
-     enteredExpression ="y_2="+ inputRule;   
+     var enteredExpression ="y_2="+ inputRule;   
      calculator.setExpression({id:"guessComputerRule",latex:enteredExpression});
      functionValue = calculator.HelperExpression({latex:"y_2"});
-     mValue = calculator.HelperExpression({latex:"m"});
-     y1L=[];
-     
-    
         
-     var i = 0;           
-     function update(i){
+     var i = 0;    
+     var mExpression = "m="+String(x1[i]);
+     calculator.setExpression({id:"inputValue",latex:mExpression});
+     var mValue = calculator.HelperExpression({latex:"m"});
+     
+     
+     var a = setInterval(function(){
+     if(i<x1.length){    
      mExpression = "m="+String(x1[i]);
      calculator.setExpression({id:"inputValue",latex:mExpression});
-              
+     i++;    
      }
+     else{
+         clearInterval(a);
+         var guessedCorrectly = arraysEqual(y1L,y1);
+         guessedComputerRule.set(guessedCorrectly);
+         };
+     },1);
         
-      
-        
-     mValue.observe('numericValue',function(){
-         
-     y1L.push(functionValue.numericValue); 
-         
-     
-     console.log(y1L);
-         
-      i += 1;
-      if(i <x1.length){
-          
-       update(i);
-          
-      }      
-     
-         
-     });
-     update(i);
-     
-     
-  
-        
-     /*    
-     y1 = generateLinearValues(x1,[0,0,coefficients[0],coefficients[1]);
-     var x1L = generateLatexList(x1,'x');
-     var y1L = generateLatexList(y1,'y');
-     calculator.setExpression({id:"xTestValues",latex:x1L});
-     calculator.setExpression({id:"yTestValues",latex:y1L});
-     
-     var guessCoefficients = getRegressionParameters("guessComputerRegression");
-     console.log(guessCoefficients);
-     y2 = generateLinearValues(x1,[guessCoefficients.c,guessCoefficients.d]);
-     var guessedCorrectly = arraysEqual(y1,y2);
-     guessedComputerRule.set(guessedCorrectly);
-     */
-        
+
+
+
+        functionValue.observe('numericValue',function(a){
+        //whenever functionValue changes, add the new value to the y1L array
+            y1L.push(functionValue.numericValue); 
+
+ 
+        });        
     }
-    
-    
+       
 });
 
 Template.slide2.helpers({
