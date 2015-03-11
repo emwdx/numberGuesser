@@ -1,3 +1,11 @@
+body{
+    
+font-size:22px;    
+    
+    
+}
+
+
 #main{
     
     
@@ -5,14 +13,14 @@
  border: solid gray 1px;
  border-radius: 5px;
  margin: 10px;    
-    
+ padding:10px;   
     
 }
 
 .inputNumber{
     
     
- width:100px;   
+ width:150px;   
     
     
 }
@@ -28,6 +36,14 @@
 #submitGuessComputerRule{
     
 margin:10px;    
+    
+    
+}
+
+.enterValues{
+    
+ margin:10px;
+ 
     
     
 }
