@@ -310,7 +310,7 @@ Template.isThisRight.events({
     
     var maxVal = maxArray(isThisRight)
     learningFunctionValue.set(maxVal[0]);
-    progress.set(100*maxVal)
+    progress.set(100*maxVal[0])
     console.log(isThisRight);
     }
     
@@ -599,3 +599,4 @@ for(var i = 0;i<array.length;i++){
 return [maxValue,maxIndex];    
     
 }
+
