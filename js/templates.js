@@ -465,7 +465,7 @@ return true;
 var evalCubicRegression=function(x){
 
     params = getRegressionParameters("cubicRegression");  
-return params.a*Math.pow(x,3)+params.b*Math.pow(x,2)+params.c*Math.pow(x,1)+params.d
+return params.a*Math.pow(x,3)+params.b*Math.pow(x,2)+params.c*x+params.d
     
     
 }
