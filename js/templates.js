@@ -306,7 +306,16 @@ Template.isThisRight.events({
     
     currentLearningSet.set(currentTrainingSet.concat([]));
     $(e.target).val('Select one:')
+    var sum = 0;
+    isThisRight.forEach(function(x){
+        sum+=x    
+    });
+        
+    for(var i = 0;i<4;i++){
+        
+        isThisRight[i]=isThisRight[i]/sum;    
     
+    }
     
     var maxVal = maxArray(isThisRight)
     learningFunctionValue.set(maxVal[0]);
