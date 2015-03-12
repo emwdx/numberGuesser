@@ -313,7 +313,7 @@ Template.isThisRight.events({
         
     for(var i = 0;i<4;i++){
         
-        isThisRight[i]=isThisRight[i]/sum;    
+        isThisRight[i]=isThisRight[i]*1/sum;    
     
     }
     
