@@ -306,7 +306,7 @@ Template.isThisRight.events({
     
     currentLearningSet.set(currentTrainingSet.concat([]));
     $(e.target).val('Select one:')
-    var a = evalLearningFunction(this.input)
+    
     
     var maxVal = maxArray(isThisRight)
     learningFunctionValue.set(maxVal[0]);
@@ -465,7 +465,7 @@ return true;
 var evalCubicRegression=function(x){
 
     params = getRegressionParameters("cubicRegression");  
-return params.a*Math.pow(x,3)+params.b*Math.pow(x,2)+params.c*Math.pow(x,3)+params.d*Math.pow(x,4);    
+return params.a*Math.pow(x,3)+params.b*Math.pow(x,2)+params.c*Math.pow(x,1)+params.d*Math.pow(x,4);    
     
     
 }
