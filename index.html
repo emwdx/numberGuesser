@@ -18,9 +18,10 @@
     
 <script type="text/spacebars" name="main">
  <body> 
+ {{>header}}
  <div class = "container">
  <div class = "row">
- <div class = "col-md-4">
+ <div class = "col-md-4" id = "leftColumn">
  {{{calculator}}}
  </div>
  <div class = "col-md-8">
@@ -74,6 +75,23 @@
 <button class = "btn btn-primary " id = "next">Next</button>
 </div>
 </div>
+</script>
+    
+<script type = "text/spacebars" name = "header">
+<nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          
+          <a class="navbar-brand" href="#">Thinking Machine</a>
+        </div>
+          <p class="navbar-text navbar-right">Created by <a class = "navbar-link" href = "http://www.evanweinberg.com"> Evan Weinberg</a></p>
+          
+        
+        
+      </div>
+</nav>
+
+        
 </script>
 
 <script type="text/spacebars" name="slide1">
@@ -153,7 +171,7 @@ Ok, enter your guess for my rule in the box below.
 <div class = "row">
 <div class = "col-md-10 col-md-offset-1">
 
-Now it's your turn to invent a rule. Throw in an exponent or two if you want. <p></p>
+Now it's your turn to invent a rule. I kept it easy on you by making a linear function. Make it a polynomial degree 3 or less or an exponential function.<p></p>
 
 <p></p>
 I'm going to try to learn your rule. Here's what I want you to do:
@@ -161,14 +179,14 @@ I'm going to try to learn your rule. Here's what I want you to do:
 <ul>
 <li>Tell me three pairs of inputs and outputs.</li>
 <li>After that, I only want you to tell me if I'm right or wrong.</li>
-<li>Once I think I'm confident in my answer, I'll tell you that I can predict it every time.</li>
+<li>Once I think I'm confident in my answer, I'll tell you what I think it is.</li>
 </ul>
 
 <p></p>
 The only thing I ask is that you use a calculator or computer to check <u>your</u> calculations. It's easiest to learn from perfect data!
 
 
-Click 'Next' and I'll get information from you so I can start learning about your rule.
+Click 'Next' and we will begin.
 
 
 </div>
@@ -235,16 +253,37 @@ Click 'Next' and I'll get information from you so I can start learning about you
  <script type = "text/spacebars" name = "slide7">
  <div class = "row">
   <div class = "col-md-12">
-  Some questions to think about:
+  Here's what I did to figure out your rule:
   <ul>
-  <li>What knowledge or concepts did you use to figure out my rule?</li>
-    <li>Every bit of knowledge you gave me helped me decide whether I had guessed your rule or not. How do you think I used this knowledge to help me know what it was? </li>
-    <li>Do you believe I was thinking on my own?</li>
+  <li>I knew you would put in a <span class = "desmosRed">linear</span>, <span class = "desmosBlue">quadratic</span>, <span class = "desmosGreen">cubic</span>, or <span class = "desmosPurple">exponential function</span>. I figured all of these were equally certain at 25%.</li>
+    <li>When you answered that an answer was correct, I increased the percentage of certainty for the model that gave that answer, and decreased the rest.</li>
+    <li>When you answered that an answer was <u>not</u> correct, I decreased the percentage certainty for the model that gave that answer, and increased the others.</li>
+    <li>Once the certainty of any model went above 90%, I gave you that model and its information.</li>
   </ul>
+  
+  You can see how each percentages changed in the Desmos graph to the left. 
+  <p></p>
+  Please go to the next page for one last question to discuss with the class.
   </div>
   </div>
+  
+ 
  </script>
-     <script type = "text/spacebars" name = "slide8">
+<script type = "text/spacebars" name = "slide8">
+<div class = "row">
+<div class = "col-md-12">
+<ul>
+<li>
+Humans learn a lot by trial and error. To find my rule, you may have tried different values to see what worked. You may have also used knowledge that you had from your math class.</li>
+<li>I used some mathematical knowledge to find your rule, but I also used trial and error. You gave me feedback on whether I was right or not. Once I was sure, I told you what I thought.</li>
+</ul>
+</div>
+</div>
+<div class = "row">
+<div class = "col-md-12">
+Based on what we've done together, do <em>you</em> believe I am a thinking machine?
+</div>
+</div>
  </script>
  
     

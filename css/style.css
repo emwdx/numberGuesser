@@ -1,7 +1,7 @@
 body{
     
-font-size:22px;    
-    
+font-size:20px;    
+padding-top: 30px;    
     
 }
 
@@ -9,12 +9,20 @@ font-size:22px;
 #main{
     
     
- height: 600px;   
+ height: 500px;   
  border: solid gray 1px;
  border-radius: 5px;
  margin: 10px;    
  padding:10px;   
     
+}
+
+#leftColumn{
+height: 500px;   
+ border: solid gray 1px;
+ border-radius: 5px;
+ margin-top: 10px;    
+     
 }
 
 .inputNumber{
@@ -46,4 +54,17 @@ margin:10px;
 
     
     
+}
+
+.desmosRed{
+   color:#C0504D;
+}
+.desmosBlue{
+   color:#4F81BD;
+}
+.desmosGreen{
+   color:#9BBB59;
+}
+.desmosPurple{
+   color:#8064A2;
 }

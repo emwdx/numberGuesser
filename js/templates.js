@@ -15,6 +15,8 @@ var outputValues = [];
 var isThisRight = [.25,.25,.25,.25];
 var currentLearningSet = ReactiveVar();
 var learningFunctionValue = ReactiveVar(0);
+var isThisRightRecord = ["","","",""];
+var numberOfComputerGuesses = 0;
 
 var calculator;
 var inputGuesses = [inputValue1,inputValue2,inputValue3]
@@ -87,11 +89,26 @@ Template.buttonBar.events({
     
 });
 
+Template.main.rendered = function(){
+    
+ var elt = document.getElementById('calculator');
+ var showExpressions = true;
+ var expressionsShowBar = false;
+ var expressionsCollapsed = true;
+ calculator = Desmos.Calculator(elt,{expressions:showExpressions,expressionsTopBar:expressionsShowBar,expressionsCollapsed:expressionsCollapsed});
+ 
+ coefficients = makeRandomLinear();
+ var equation = 'y='+String(coefficients[0])+'x+'+String(coefficients[1]);    
+  calculator.setExpression({id:'graph1', latex:equation});
+  
+
+}
+
 Template.main.helpers({
     
 calculator:function(){
     
- return '<div id="calculator" style="width: 300px; height: 300px;"></div>';   
+ return '<div id="calculator" style="width: 100%; height: 500px;"></div>';   
     
 }
     
@@ -213,7 +230,8 @@ Template.slide5.helpers({
 Template.slide5.events({
     
    'click #submitInputData':function(){
-    learningFunctionValue.set(0);   
+    learningFunctionValue.set(0);
+    isThisRight = [.25,.25,.25,.25]
     thinking.set(true);
     var xI1 = parseInt($("#input1").val());
     var yI1 = parseInt($("#output1").val());
@@ -226,7 +244,12 @@ Template.slide5.events({
     var xList = "x_1=\\left["+xI1+","+xI2+","+xI3+"\\right]";
     var yList = "y_1=\\left["+yI1+","+yI2+","+yI3+"\\right]";
     calculator.setExpression({id:"inputValues",latex:xList});
-    calculator.setExpression({id:"outputValues",latex:yList}); 
+    calculator.setExpression({id:"outputValues",latex:yList});
+       calculator.setExpression({id:"linearRegression",latex:"y_1~c(x_1)+d"});
+calculator.setExpression({id:"quadraticRegression",latex:"y_1~b(x_1)^2+c(x_1)+d"});
+calculator.setExpression({id:"cubicRegression",latex:"y_1~a(x_1)^3+b(x_1)^2+c(x_1)+d"});
+calculator.setExpression({id:"exponentialRegression",latex:"y_1~b*c^{x_1}+d"});    
+calculator.setExpression({id:"guessData",latex:"\\left(x_1,y_1\\right)"});
     fakeProgress();   
    }
     
@@ -251,7 +274,7 @@ Template.slide6.helpers({
 });
 
 Template.slide6.rendered = function(){
-    
+ currentLearningSet.set([.25,.25,.25,.25])
  var learningSet = []
         for(var i = 0;i<4;i++){
         var values = buildGuessObject();
@@ -260,13 +283,18 @@ Template.slide6.rendered = function(){
         }
         currentLearningSet.set(learningSet);   
  progress.set(0);   
-    
+ isThisRightRecord = ["","","",""];   
 }
 
 Template.isThisRight.events({
 
     'change .yesOrNo':function(e){
-        
+    numberOfComputerGuesses++;
+     for(var k = 0;k<=isThisRight.length-1;k++){
+         
+        isThisRightRecord[k]+=100*isThisRight[k]+','; 
+         
+     }
      var curVal = parseInt($(e.target).val());
      if(curVal==1){
          
@@ -274,8 +302,8 @@ Template.isThisRight.events({
     outputValues = outputValues.concat([this.output]);
     a = calculator.getState();
     var listExp = a.expressions.list.length     
-    var xList = a.expressions.list[listExp-2].latex.split('[')[1].split('\\r');
-    var yList = a.expressions.list[listExp-1].latex.split('[')[1].split('\\r');
+    var xList = a.expressions.list[listExp-7].latex.split('[')[1].split('\\r');
+    var yList = a.expressions.list[listExp-6].latex.split('[')[1].split('\\r');
          
     var xList = "x_1=\\left["+ xList[0] +","+ this.input+"\\right]";
     var yList = "y_1=\\left["+ yList[0] + ","+ this.output+"\\right]";
@@ -292,6 +320,8 @@ Template.isThisRight.events({
          
          
      }
+        
+    
     var currentTrainingSet = currentLearningSet.get();
     for(var i = 0;i<4;i++){
         
@@ -307,6 +337,7 @@ Template.isThisRight.events({
     currentLearningSet.set(currentTrainingSet.concat([]));
     $(e.target).val('Select one:')
     var sum = 0;
+    
     isThisRight.forEach(function(x){
         sum+=x    
     });
@@ -316,11 +347,10 @@ Template.isThisRight.events({
         isThisRight[i]=isThisRight[i]*1/sum;    
     
     }
-    
     var maxVal = maxArray(isThisRight)
     learningFunctionValue.set(maxVal[0]);
     progress.set(100*maxVal[0])
-    console.log(isThisRight);
+    
     }
     
     
@@ -337,13 +367,50 @@ Template.progressBar.helpers({
     
 });
 
+Template.slide7.rendered = function(){
+    
+ for(var k = 0;k<=isThisRight.length-1;k++){
+         
+        isThisRightRecord[k]+=100*isThisRight[k]; 
+         
+     }
+    
+calculator.setBlank();  
+    
+calculator.setViewport([0,numberOfComputerGuesses,0,100]);
+
+var xValues = ''
+for(i=0;i<numberOfComputerGuesses;i++){
+ xValues+=i+','   ;
+    
+}
+xValues += numberOfComputerGuesses;
+var xList = "x_1=\\left["+ xValues +"\\right]";
+calculator.setExpression({id:"x1",latex:xList});
+var yList = "y_1=\\left["+ isThisRightRecord[0] +"\\right]";
+calculator.setExpression({id:"y1",latex:yList});
+var yList = "y_2=\\left["+ isThisRightRecord[1] +"\\right]";
+calculator.setExpression({id:"y2",latex:yList});
+var yList = "y_3=\\left["+ isThisRightRecord[2] +"\\right]";
+calculator.setExpression({id:"y3",latex:yList});
+var yList = "y_4=\\left["+ isThisRightRecord[3] +"\\right]";
+calculator.setExpression({id:"y4",latex:yList});
+calculator.setExpression({id:"linear",latex:"\\left(x_1,y_1\\right)"});    
+calculator.setExpression({id:"quadratic",latex:"\\left(x_1,y_2\\right)"}); 
+calculator.setExpression({id:"cubic",latex:"\\left(x_1,y_3\\right)"});   
+calculator.setExpression({id:"exponential",latex:"\\left(x_1,y_4\\right)"});   
+
+}
+
+
+
 Template.yourRule.helpers({
     
    yourRule:function(){
-       
-    var maxData = maxArray(isThisRight);
     a = calculator.getState();
-    var currentExp = a.expressions.list[maxData[1]+1];
+    var listExp = a.expressions.list.length;    
+    var maxData = maxArray(isThisRight);
+    var currentExp = a.expressions.list[listExp - 5+ maxData[1]];
     currentExp.latex = currentExp.latex.replace('~','=');
     return currentExp.latex;
     
@@ -353,7 +420,8 @@ Template.yourRule.helpers({
         
      var maxData = maxArray(isThisRight);
     a = calculator.getState();
-    var currentExp = a.expressions.list[maxData[1]+1].regressionParameters;
+    var listExp = a.expressions.list.length;
+    var currentExp = a.expressions.list[listExp - 5+ maxData[1]].regressionParameters;
     var parameters = [];
     for (var property in currentExp) {
     if (currentExp.hasOwnProperty(property)) {
@@ -377,22 +445,6 @@ Template.yourRule.rendered = function(){
     
 };
 
-Template.main.rendered = function(){
-    
- var elt = document.getElementById('calculator');
- var showExpressions = true;
- calculator = Desmos.Calculator(elt,{expressions:showExpressions});
- 
- coefficients = makeRandomLinear();
- var equation = 'y='+String(coefficients[0])+'x+'+String(coefficients[1]);    
-  calculator.setExpression({id:'graph1', latex:equation});
-  
-calculator.setExpression({id:"linearRegression",latex:"y_1~c(x_1)+d"});
-calculator.setExpression({id:"quadraticRegression",latex:"y_1~b(x_1)^2+c(x_1)+d"});
-calculator.setExpression({id:"cubicRegression",latex:"y_1~a(x_1)^3+b(x_1)^2+c(x_1)+d"});
-calculator.setExpression({id:"exponentialRegression",latex:"y_1~b*c^{x_1}+d"});    
-calculator.setExpression({id:"guessData",latex:"\\left(x_1,y_1\\right)"});
-}
 
 var makeRandomLinear = function(){
     
